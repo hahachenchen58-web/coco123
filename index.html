@@ -1,447 +1,247 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="light dark" />
-  <link rel="icon" href="data:," />
-  <title>停一分钟</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Source+Serif+4:opsz,wght@8..60,600&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBERPUNK // NEON NET</title>
+    <style>
+        /* 赛博朋克核心配色与变量 */
+        :root {
+            --bg-color: #0a0a12;
+            --neon-pink: #ff007f;
+            --neon-cyan: #00f0ff;
+            --neon-yellow: #fcee0a;
+            --text-color: #e0e0ed;
+            --panel-bg: rgba(16, 16, 28, 0.75);
+        }
 
-    :root {
-      color-scheme: light dark;
-      --paper: #f3f1eb;
-      --ink: #15211f;
-      --muted: #5f6965;
-      --line: rgba(21, 33, 31, .18);
-      --soft: rgba(255, 255, 255, .52);
-      --accent: #e34f35;
-      --accent-ink: #fff9f2;
-      --orb: #1d7770;
-      --orb-soft: #d7e6df;
-      --shadow: 0 24px 70px rgba(30, 43, 38, .11);
-    }
+        /* 基础重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace, "Microsoft YaHei";
+        }
 
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --paper: #111816;
-        --ink: #edf1e9;
-        --muted: #abb6af;
-        --line: rgba(235, 242, 236, .18);
-        --soft: rgba(255, 255, 255, .055);
-        --accent: #f16b51;
-        --accent-ink: #17110f;
-        --orb: #5db3a7;
-        --orb-soft: #203b36;
-        --shadow: 0 24px 80px rgba(0, 0, 0, .28);
-      }
-    }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            /* 背景科技感网格线 */
+            background-image: 
+                linear-gradient(rgba(255, 0, 127, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      min-width: 320px;
-      min-height: 100vh;
-      overflow-x: hidden;
-      color: var(--ink);
-      background:
-        linear-gradient(90deg, transparent 49.95%, var(--line) 50%, transparent 50.05%) top center / min(1280px, 100%) 100% no-repeat,
-        var(--paper);
-      font-family: "Noto Sans SC", sans-serif;
-    }
+        /* 顶部导航栏 - 斜切硬核线条 */
+        header {
+            background: linear-gradient(135deg, var(--neon-pink) 0%, transparent 100%) top left no-repeat;
+            background-size: 100% 4px;
+            background-color: rgba(10, 10, 18, 0.9);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.3);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
 
-    button { font: inherit; }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            /* 霓虹发光字 */
+            text-shadow: 0 0 5px var(--neon-cyan), 0 0 15px var(--neon-cyan);
+        }
 
-    .grain {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: .055;
-      z-index: 10;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-    }
+        .logo span {
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px var(--neon-pink), 0 0 15px var(--neon-pink);
+        }
 
-    main {
-      width: min(1280px, 100%);
-      margin: 0 auto;
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-    }
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-left: 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-    .intro,
-    .practice { min-width: 0; }
+        nav a:hover {
+            color: var(--neon-yellow);
+            text-shadow: 0 0 8px var(--neon-yellow);
+        }
 
-    .intro {
-      min-height: 100vh;
-      padding: clamp(34px, 6vw, 86px);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
-    }
+        /* 主体内容区 */
+        main {
+            flex: 1;
+            max-width: 1000px;
+            width: 90%;
+            margin: 3rem auto;
+            padding: 2.5rem;
+            background: var(--panel-bg);
+            /* 赛博朋克标志性斜切角效果 */
+            clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%);
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2), inset 0 0 15px rgba(0, 240, 255, 0.1);
+            position: relative;
+        }
 
-    .edition {
-      margin: 0;
-      width: max-content;
-      padding-bottom: 7px;
-      border-bottom: 2px solid var(--accent);
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: .08em;
-    }
+        /* 装饰用的小标签 */
+        main::before {
+            content: "SYS.STATUS: ACTIVE";
+            position: absolute;
+            top: 4px;
+            left: 10px;
+            font-size: 0.65rem;
+            color: var(--neon-pink);
+            letter-spacing: 2px;
+        }
 
-    .lead { max-width: 570px; margin: 72px 0 80px; }
-    h1 {
-      margin: 0;
-      font-family: "Source Serif 4", "Noto Sans SC", serif;
-      font-size: clamp(60px, 8.2vw, 126px);
-      line-height: .91;
-      letter-spacing: -.065em;
-      font-weight: 600;
-    }
-    h1 .punctuation { color: var(--accent); }
+        /* 标题样式 */
+        h1 {
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            border-bottom: 2px dashed rgba(255, 0, 127, 0.4);
+            padding-bottom: 0.5rem;
+        }
 
-    .deck {
-      max-width: 450px;
-      margin: 38px 0 0;
-      color: var(--muted);
-      font-size: clamp(17px, 1.4vw, 21px);
-      line-height: 1.75;
-    }
+        /* 模拟黑客终端打字机效果 */
+        .terminal-text {
+            background: #000;
+            padding: 1rem;
+            border-left: 3px solid var(--neon-pink);
+            font-family: monospace;
+            color: #00ff00; /* 经典黑客绿 */
+            margin-bottom: 2rem;
+            box-shadow: inset 0 0 10px rgba(0,255,0,0.2);
+        }
 
-    .note {
-      display: flex;
-      align-items: flex-start;
-      gap: 18px;
-      padding-top: 22px;
-      border-top: 1px solid var(--line);
-      max-width: 480px;
-    }
-    .note strong {
-      flex: 0 0 auto;
-      color: var(--accent);
-      font: 600 30px/1 "Source Serif 4", serif;
-    }
-    .note p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
-    }
+        .terminal-text span::after {
+            content: "█";
+            animation: blink 0.8s infinite;
+        }
 
-    .practice {
-      min-height: 100vh;
-      padding: clamp(28px, 5vw, 68px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      background: var(--soft);
-    }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            color: #b5b5c8;
+        }
 
-    .timer-set {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      margin-bottom: 34px;
-    }
-    .timer-set button {
-      border: 0;
-      border-radius: 999px;
-      min-width: 54px;
-      padding: 8px 13px;
-      color: var(--muted);
-      background: transparent;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 700;
-      transition: background .2s, color .2s;
-    }
-    .timer-set button[aria-pressed="true"] {
-      background: var(--ink);
-      color: var(--paper);
-    }
-    .timer-set button:focus-visible,
-    .main-action:focus-visible {
-      outline: 3px solid color-mix(in srgb, var(--accent) 50%, transparent);
-      outline-offset: 3px;
-    }
+        /* 赛博朋克矩阵风按钮 */
+        .cyber-btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: transparent;
+            color: var(--neon-yellow);
+            border: 1px solid var(--neon-yellow);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0% 30%);
+        }
 
-    .breath-stage {
-      width: min(72vw, 410px);
-      aspect-ratio: 1;
-      display: grid;
-      place-items: center;
-      position: relative;
-      isolation: isolate;
-    }
+        .cyber-btn:hover {
+            background: var(--neon-yellow);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-yellow);
+        }
 
-    .rings,
-    .breath-disc { position: absolute; border-radius: 50%; }
-    .rings { inset: 0; border: 1px solid var(--line); }
-    .rings::before,
-    .rings::after {
-      content: "";
-      position: absolute;
-      border: 1px solid var(--line);
-      border-radius: 50%;
-      inset: 11%;
-    }
-    .rings::after { inset: 22%; }
+        /* 页脚 */
+        footer {
+            background: #05050a;
+            border-top: 1px solid rgba(255, 0, 127, 0.2);
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.8rem;
+            color: #666680;
+            letter-spacing: 1px;
+        }
 
-    .breath-disc {
-      width: 53%;
-      aspect-ratio: 1;
-      background: var(--orb);
-      box-shadow: var(--shadow);
-      transform: scale(.76);
-      z-index: -1;
-      transition: transform 4s cubic-bezier(.45, .05, .55, .95), background .3s;
-    }
-    .breath-stage.inhale .breath-disc { transform: scale(1); }
-    .breath-stage.exhale .breath-disc { transform: scale(.76); transition-duration: 6s; }
-    .breath-stage.hold .breath-disc { transform: scale(1); }
-
-    .readout { text-align: center; user-select: none; }
-    .phase {
-      margin: 0 0 8px;
-      color: var(--accent-ink);
-      font-size: clamp(20px, 2.4vw, 29px);
-      font-weight: 700;
-      letter-spacing: .12em;
-    }
-    .countdown {
-      margin: 0;
-      color: var(--accent-ink);
-      font: 600 clamp(48px, 7vw, 82px)/1 "Source Serif 4", serif;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .progress-track {
-      width: min(310px, 72vw);
-      height: 2px;
-      margin: 34px 0 22px;
-      background: var(--line);
-      overflow: hidden;
-    }
-    .progress-bar {
-      height: 100%;
-      width: 0;
-      background: var(--accent);
-      transition: width .3s linear;
-    }
-
-    .main-action {
-      width: min(310px, 72vw);
-      border: 0;
-      background: var(--accent);
-      color: var(--accent-ink);
-      padding: 15px 22px;
-      cursor: pointer;
-      font-weight: 900;
-      letter-spacing: .08em;
-      box-shadow: 7px 7px 0 var(--ink);
-      transition: transform .15s, box-shadow .15s;
-    }
-    .main-action:hover { transform: translate(-2px, -2px); box-shadow: 9px 9px 0 var(--ink); }
-    .main-action:active { transform: translate(5px, 5px); box-shadow: 2px 2px 0 var(--ink); }
-
-    .guide {
-      max-width: 340px;
-      margin: 28px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
-      text-align: center;
-    }
-
-    .complete {
-      position: absolute;
-      inset: auto clamp(20px, 5vw, 68px) clamp(24px, 5vw, 54px);
-      margin: 0;
-      padding-top: 13px;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 12px;
-      text-align: center;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: .35s ease;
-    }
-    .complete.show { opacity: 1; transform: translateY(0); }
-
-    @media (max-width: 760px) {
-      body { background: var(--paper); }
-      main { display: block; }
-      .intro { min-height: auto; padding: 34px 24px 54px; }
-      .lead { margin: 68px 0 72px; }
-      h1 { font-size: clamp(64px, 22vw, 96px); max-width: 350px; }
-      .deck { font-size: 17px; margin-top: 30px; }
-      .note { max-width: none; }
-      .practice { min-height: 780px; padding: 48px 22px 82px; border-top: 1px solid var(--line); }
-      .timer-set { margin-bottom: 24px; }
-      .complete { bottom: 26px; }
-    }
-
-    @media (max-height: 730px) and (min-width: 761px) {
-      .practice { padding-block: 24px; }
-      .timer-set { margin-bottom: 14px; }
-      .breath-stage { width: min(49vh, 360px); }
-      .progress-track { margin-top: 20px; }
-      .guide { margin-top: 18px; }
-      .complete { display: none; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { transition-duration: .01ms !important; }
-    }
-  </style>
+        /* 光标闪烁动画 */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
 </head>
 <body>
-  <div class="grain" aria-hidden="true"></div>
-  <main>
-    <section class="intro" aria-labelledby="page-title">
-      <p class="edition">今天 · 给自己一点空白</p>
-      <div class="lead">
-        <h1 id="page-title">停<br>一分钟<span class="punctuation">。</span></h1>
-        <p class="deck">不用解决什么。把肩膀放松，让呼吸慢下来。接下来的片刻，只需要跟着圆圈。</p>
-      </div>
-      <div class="note">
-        <strong>01</strong>
-        <p>舒服地坐着或站着都可以。若感到不适，随时恢复自然呼吸；这不是比赛，也没有标准答案。</p>
-      </div>
-    </section>
 
-    <section class="practice" aria-label="呼吸练习">
-      <div class="timer-set" role="group" aria-label="练习时长">
-        <button type="button" data-minutes="1" aria-pressed="true">1 分钟</button>
-        <button type="button" data-minutes="2" aria-pressed="false">2 分钟</button>
-        <button type="button" data-minutes="3" aria-pressed="false">3 分钟</button>
-      </div>
+    <!-- 顶部导航 -->
+    <header>
+        <div class="logo">NEO<span>_DISTRICT</span></div>
+        <nav>
+            <a href="#">// 节点</a>
+            <a href="#">// 协议</a>
+            <a href="#">// 终端</a>
+        </nav>
+    </header>
 
-      <div class="breath-stage" id="stage">
-        <div class="rings" aria-hidden="true"></div>
-        <div class="breath-disc" aria-hidden="true"></div>
-        <div class="readout" aria-live="polite">
-          <p class="phase" id="phase">准备</p>
-          <p class="countdown" id="countdown">1:00</p>
+    <!-- 主体区域 -->
+    <main>
+        <h1>欢迎接入矩阵控制台</h1>
+        
+        <!-- 动态黑客终端效果区 -->
+        <div class="terminal-text">
+            <span id="typing">INITIALIZING CONNECTION... ERROR_404_NOT_FOUND...</span>
         </div>
-      </div>
 
-      <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progress"></div></div>
-      <button class="main-action" type="button" id="action">开始呼吸</button>
-      <p class="guide" id="guide">吸气 4 秒 · 停留 2 秒 · 呼气 6 秒<br>让节奏自然，不必刻意吸得很深。</p>
-      <p class="complete" id="complete">这一分钟已经属于你。带着现在的节奏，慢一点回到接下来的事。</p>
-    </section>
-  </main>
+        <p>
+            欢迎来到夜之城的外网分支。本协议已自动加载您之前生成的 
+            <span style="color: var(--neon-cyan); font-weight: bold;">UUID 安全密钥密钥</span>。
+            这里的数据全量加密，拒绝巨型企业的审查。
+        </p>
+        
+        <p>你可以自由注入你的代码片段，或者利用边缘工具重写这个网路的逻辑。准备好潜入了吗？</p>
 
-  <script>
-    (function () {
-      var stage = document.getElementById('stage');
-      var phase = document.getElementById('phase');
-      var countdown = document.getElementById('countdown');
-      var progress = document.getElementById('progress');
-      var action = document.getElementById('action');
-      var complete = document.getElementById('complete');
-      var duration = 60;
-      var running = false;
-      var startTime = 0;
-      var raf = 0;
-      var lastPhase = '';
+        <!-- 按钮 -->
+        <a href="#" class="cyber-btn" onclick="triggerGlitch()">[ 启动协议 ]</a>
+    </main>
 
-      function formatTime(seconds) {
-        var safe = Math.max(0, Math.ceil(seconds));
-        var min = Math.floor(safe / 60);
-        var sec = String(safe % 60).padStart(2, '0');
-        return min + ':' + sec;
-      }
+    <!-- 页脚 -->
+    <footer>
+        CRITICAL DATA // © 2026 NEO_DISTRICT. ALL RIGHTS RESERVED.
+    </footer>
 
-      function updateBreath(elapsed) {
-        var cycle = elapsed % 12;
-        var nextPhase;
-        var label;
-        if (cycle < 4) {
-          nextPhase = 'inhale';
-          label = '吸气';
-        } else if (cycle < 6) {
-          nextPhase = 'hold';
-          label = '停留';
-        } else {
-          nextPhase = 'exhale';
-          label = '呼气';
+    <!-- 交互脚本 -->
+    <script>
+        // 动态打字机效果
+        const text = "CONNECTING TO V2RAY_CORE... UUID VERIFIED. ACCESS GRANTED.";
+        let index = 0;
+        const typingElement = document.getElementById("typing");
+
+        function typeEffect() {
+            if (index < text.length) {
+                if(index === 0) typingElement.innerHTML = "";
+                typingElement.innerHTML += text.charAt(index);
+                index++;
+                setTimeout(typeEffect, 70);
+            }
         }
-        if (nextPhase !== lastPhase) {
-          stage.classList.remove('inhale', 'hold', 'exhale');
-          stage.classList.add(nextPhase);
-          phase.textContent = label;
-          lastPhase = nextPhase;
+        
+        // 网页加载 1 秒后开始打字
+        setTimeout(typeEffect, 1000);
+
+        // 点击按钮的特效
+        function triggerGlitch() {
+            alert("⚠️ 警告：正在越过公司防火墙，数据流已重定向。");
         }
-      }
-
-      function tick(now) {
-        var elapsed = (now - startTime) / 1000;
-        var remaining = duration - elapsed;
-        if (remaining <= 0) {
-          running = false;
-          cancelAnimationFrame(raf);
-          stage.classList.remove('inhale', 'hold', 'exhale');
-          phase.textContent = '完成';
-          countdown.textContent = '0:00';
-          progress.style.width = '100%';
-          action.textContent = '再来一次';
-          complete.classList.add('show');
-          return;
-        }
-        updateBreath(elapsed);
-        countdown.textContent = formatTime(remaining);
-        progress.style.width = Math.min(100, elapsed / duration * 100) + '%';
-        raf = requestAnimationFrame(tick);
-      }
-
-      function reset() {
-        running = false;
-        cancelAnimationFrame(raf);
-        stage.classList.remove('inhale', 'hold', 'exhale');
-        phase.textContent = '准备';
-        countdown.textContent = formatTime(duration);
-        progress.style.width = '0%';
-        action.textContent = '开始呼吸';
-        complete.classList.remove('show');
-        lastPhase = '';
-      }
-
-      document.querySelectorAll('[data-minutes]').forEach(function (button) {
-        button.addEventListener('click', function () {
-          document.querySelectorAll('[data-minutes]').forEach(function (item) {
-            item.setAttribute('aria-pressed', item === button ? 'true' : 'false');
-          });
-          duration = Number(button.getAttribute('data-minutes')) * 60;
-          reset();
-        });
-      });
-
-      action.addEventListener('click', function () {
-        if (running) {
-          reset();
-          return;
-        }
-        complete.classList.remove('show');
-        running = true;
-        lastPhase = '';
-        startTime = performance.now();
-        action.textContent = '暂停并重置';
-        raf = requestAnimationFrame(tick);
-      });
-    }());
-  </script>
+    </script>
 </body>
 </html>
