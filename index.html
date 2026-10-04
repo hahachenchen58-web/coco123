@@ -3,245 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBERPUNK // NEON NET</title>
+    <title>我的纯网页</title>
     <style>
-        /* 赛博朋克核心配色与变量 */
-        :root {
-            --bg-color: #0a0a12;
-            --neon-pink: #ff007f;
-            --neon-cyan: #00f0ff;
-            --neon-yellow: #fcee0a;
-            --text-color: #e0e0ed;
-            --panel-bg: rgba(16, 16, 28, 0.75);
-        }
-
-        /* 基础重置 */
+        /* 基础样式重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Courier New', Courier, monospace, "Microsoft YaHei";
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f7f6;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
-            /* 背景科技感网格线 */
-            background-image: 
-                linear-gradient(rgba(255, 0, 127, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
-            background-size: 20px 20px;
+            min-height: 100vh;
         }
 
-        /* 顶部导航栏 - 斜切硬核线条 */
+        /* 导航栏 */
         header {
-            background: linear-gradient(135deg, var(--neon-pink) 0%, transparent 100%) top left no-repeat;
-            background-size: 100% 4px;
-            background-color: rgba(10, 10, 18, 0.9);
-            border-bottom: 1px solid rgba(0, 240, 255, 0.3);
-            padding: 1.5rem 2rem;
+            background-color: #2c3e50;
+            color: #fff;
+            padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            /* 霓虹发光字 */
-            text-shadow: 0 0 5px var(--neon-cyan), 0 0 15px var(--neon-cyan);
-        }
-
-        .logo span {
-            color: var(--neon-pink);
-            text-shadow: 0 0 5px var(--neon-pink), 0 0 15px var(--neon-pink);
+        header .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
         }
 
         nav a {
-            color: var(--text-color);
+            color: #fff;
             text-decoration: none;
-            margin-left: 2rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            position: relative;
+            margin-left: 1.5rem;
+            transition: color 0.3s;
         }
 
         nav a:hover {
-            color: var(--neon-yellow);
-            text-shadow: 0 0 8px var(--neon-yellow);
+            color: #1abc9c;
         }
 
         /* 主体内容区 */
         main {
             flex: 1;
-            max-width: 1000px;
-            width: 90%;
-            margin: 3rem auto;
-            padding: 2.5rem;
-            background: var(--panel-bg);
-            /* 赛博朋克标志性斜切角效果 */
-            clip-path: polygon(0 0, 95% 0, 100% 5%, 100% 100%, 5% 100%, 0 95%);
-            border: 2px solid var(--neon-cyan);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2), inset 0 0 15px rgba(0, 240, 255, 0.1);
-            position: relative;
+            max-width: 800px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
-        /* 装饰用的小标签 */
-        main::before {
-            content: "SYS.STATUS: ACTIVE";
-            position: absolute;
-            top: 4px;
-            left: 10px;
-            font-size: 0.65rem;
-            color: var(--neon-pink);
-            letter-spacing: 2px;
-        }
-
-        /* 标题样式 */
         h1 {
-            font-size: 2.5rem;
-            color: #fff;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            border-bottom: 2px dashed rgba(255, 0, 127, 0.4);
-            padding-bottom: 0.5rem;
-        }
-
-        /* 模拟黑客终端打字机效果 */
-        .terminal-text {
-            background: #000;
-            padding: 1rem;
-            border-left: 3px solid var(--neon-pink);
-            font-family: monospace;
-            color: #00ff00; /* 经典黑客绿 */
-            margin-bottom: 2rem;
-            box-shadow: inset 0 0 10px rgba(0,255,0,0.2);
-        }
-
-        .terminal-text span::after {
-            content: "█";
-            animation: blink 0.8s infinite;
+            margin-bottom: 1rem;
+            color: #2c3e50;
         }
 
         p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 2rem;
-            color: #b5b5c8;
+            margin-bottom: 1.5rem;
         }
 
-        /* 赛博朋克矩阵风按钮 */
-        .cyber-btn {
+        /* 按钮样式 */
+        .btn {
             display: inline-block;
-            padding: 0.8rem 2rem;
-            background: transparent;
-            color: var(--neon-yellow);
-            border: 1px solid var(--neon-yellow);
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            background-color: #1abc9c;
+            color: #fff;
+            padding: 0.5rem 1.5rem;
             text-decoration: none;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0% 30%);
+            border-radius: 4px;
+            transition: background 0.3s;
         }
 
-        .cyber-btn:hover {
-            background: var(--neon-yellow);
-            color: #000;
-            box-shadow: 0 0 15px var(--neon-yellow);
+        .btn:hover {
+            background-color: #16a085;
         }
 
         /* 页脚 */
         footer {
-            background: #05050a;
-            border-top: 1px solid rgba(255, 0, 127, 0.2);
+            background-color: #2c3e50;
+            color: #bdc3c7;
             text-align: center;
-            padding: 1.5rem;
-            font-size: 0.8rem;
-            color: #666680;
-            letter-spacing: 1px;
-        }
-
-        /* 光标闪烁动画 */
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+            padding: 1rem;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
 
-    <!-- 顶部导航 -->
+    <!-- 头部导航 -->
     <header>
-        <div class="logo">NEO<span>_DISTRICT</span></div>
+        <div class="logo">MyWebsite</div>
         <nav>
-            <a href="#">// 节点</a>
-            <a href="#">// 协议</a>
-            <a href="#">// 终端</a>
+            <a href="#">首页</a>
+            <a href="#">关于</a>
+            <a href="#">服务</a>
         </nav>
     </header>
 
-    <!-- 主体区域 -->
+    <!-- 网页核心内容 -->
     <main>
-        <h1>欢迎接入矩阵控制台</h1>
-        
-        <!-- 动态黑客终端效果区 -->
-        <div class="terminal-text">
-            <span id="typing">INITIALIZING CONNECTION... ERROR_404_NOT_FOUND...</span>
-        </div>
-
-        <p>
-            欢迎来到夜之城的外网分支。本协议已自动加载您之前生成的 
-            <span style="color: var(--neon-cyan); font-weight: bold;">UUID 安全密钥密钥</span>。
-            这里的数据全量加密，拒绝巨型企业的审查。
-        </p>
-        
-        <p>你可以自由注入你的代码片段，或者利用边缘工具重写这个网路的逻辑。准备好潜入了吗？</p>
-
-        <!-- 按钮 -->
-        <a href="#" class="cyber-btn" onclick="triggerGlitch()">[ 启动协议 ]</a>
+        <h1>欢迎来到我的纯网页</h1>
+        <p>这是一个完全独立的 HTML 页面。所有的样式（CSS）都已经内置在文件的 <code>&lt;style&gt;</code> 标签中，不需要加载外部样式表，非常适合作为项目的起点或个人主页。</p>
+        <p>你可以自由修改这里的文字、添加图片或调整颜色来打造你自己的专属网页。</p>
+        <a href="#" class="btn" onclick="alert('你点击了按钮！')">点击体验</a>
     </main>
 
     <!-- 页脚 -->
     <footer>
-        CRITICAL DATA // © 2026 NEO_DISTRICT. ALL RIGHTS RESERVED.
+        <p>&copy; 2026 我的网站. 保留所有权利.</p>
     </footer>
 
-    <!-- 交互脚本 -->
-    <script>
-        // 动态打字机效果
-        const text = "CONNECTING TO V2RAY_CORE... UUID VERIFIED. ACCESS GRANTED.";
-        let index = 0;
-        const typingElement = document.getElementById("typing");
-
-        function typeEffect() {
-            if (index < text.length) {
-                if(index === 0) typingElement.innerHTML = "";
-                typingElement.innerHTML += text.charAt(index);
-                index++;
-                setTimeout(typeEffect, 70);
-            }
-        }
-        
-        // 网页加载 1 秒后开始打字
-        setTimeout(typeEffect, 1000);
-
-        // 点击按钮的特效
-        function triggerGlitch() {
-            alert("⚠️ 警告：正在越过公司防火墙，数据流已重定向。");
-        }
-    </script>
 </body>
 </html>
